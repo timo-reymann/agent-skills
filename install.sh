@@ -9,13 +9,14 @@ set -euo pipefail
 #   ./install.sh --uninstall     -> remove the links this script created
 
 catalog="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-dest="$HOME/.claude/skills"
+claude_dir="${CLAUDE_CONFIG_DIR:-"$HOME/.claude"}"
+dest="${claude_dir}/skills"
 uninstall=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --opencode) dest="$HOME/.config/opencode/skills" ;;
-    --claude)   dest="$HOME/.claude/skills" ;;
+    --claude)   dest="${claude_dir}/skills" ;;
     --target)   dest="$2"; shift ;;
     --uninstall) uninstall=1 ;;
     -h|--help)
