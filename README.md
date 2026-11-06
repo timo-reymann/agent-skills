@@ -14,6 +14,8 @@ agent-skills/
 │   └── SKILL.md
 ├── create-pr/          # open a PR from the current work, template-aware
 │   └── SKILL.md
+├── show-me/            # explain the current topic with diffs, trees and diagrams
+│   └── SKILL.md
 ├── review-pr/          # drive a PR to green: CI + SonarCloud, commit by commit
 │   └── SKILL.md
 ├── grilling/           # relentless design-tree interview of a plan or idea
@@ -32,7 +34,8 @@ agent-skills/
 | Skill       | What it does                                                                                                                                                                                                                                        |
 |-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `gh-issue`  | Reads the repo's issue template/form, interviews you until required fields are filled, shows the full issue for review, submits only on approval.                                                                                                   |
-| `create-pr` | Preflight + conventional commits, fills the repo's PR template if it has one (otherwise a concise Problem/Changes/Verification body), previews title + body and waits for approval, then pushes and opens the PR. Local checks run only on request. |
+| `create-pr` | Preflight + conventional commits, fills the repo's PR template if it has one (otherwise a short visual description: one-sentence why, special things to note, a compact change outline of diffs and trees), previews title + body and waits for approval, then pushes and opens the PR. Local checks run only on request. *(default body adapted from humanlayer/skills)* |
+| `show-me`   | Explains the current topic visually: pseudocode, call and component trees, file trees, Mermaid, `diff` views, or one focused HTML page. User-invoked only. *(adapted from humanlayer/skills)* |
 | `review-pr` | Waits for CI, diagnoses GitHub Actions / CircleCI failures, reads SonarCloud findings when the project uses Sonar, fixes them in separate commits with a progress update after each push, until everything is green.                                |
 | `grilling`  | Interviews you in rounds over a design tree of decisions, with a recommended answer per question, until nothing is left assumed. *(adapted from mattpocock/skills)* |
 | `handoff`   | Writes a handoff document summarising the conversation for a fresh agent, saved to the OS temp dir with secrets redacted. User-invoked only. *(adapted from mattpocock/skills)* |
@@ -44,7 +47,11 @@ agent-skills/
 `grilling`, `handoff`, `code-review` and `writing-for-agents` are adapted from
 [mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT).
 `code-review` was changed to work without that repo's setup skill and issue
-tracker configuration; the other three are unmodified. See
+tracker configuration; the other three are unmodified.
+
+`show-me` and the default PR body of `create-pr` (used when a repository has no
+PR template) are adapted from [humanlayer/skills](https://github.com/humanlayer/skills)
+by HumanLayer (MIT). `show-me` only had its HTML-artifact step generalised. See
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for the license notice.
 
 ## Compatibility
