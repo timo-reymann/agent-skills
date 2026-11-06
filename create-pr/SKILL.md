@@ -1,6 +1,6 @@
 ---
 name: create-pr
-description: Create a pull request that a maintainer can review quickly - inspect the diff, run the project's checks, commit with the repo's convention, fill the repository's PR template when one exists (otherwise use a concise Problem/Changes/Verification structure), preview the result, push a dedicated branch and open the PR. Use when the user wants to open, raise, or submit a PR.
+description: Create a pull request that a maintainer can review quickly - inspect the diff, run the project's checks, commit with the repo's convention, fill the repository's PR template when one exists (otherwise use a short visual description: one-sentence why, special things to note, and a compact change outline of diffs, trees and contracts), preview the result, push a dedicated branch and open the PR. Use when the user wants to open, raise, or submit a PR.
 ---
 
 ## What this skill does
@@ -8,7 +8,7 @@ description: Create a pull request that a maintainer can review quickly - inspec
 Turns the current work into a reviewable pull request:
 
 1. Checks what is actually being shipped (diff, branch, stray files)
-2. Builds the PR body from the repository's template, or a concise default
+2. Builds the PR body from the repository's template, or a short visual default
 3. Previews title + body and waits for a yes
 4. Pushes a dedicated branch, opens the PR, confirms checks started
 
@@ -94,34 +94,78 @@ and follow title instructions it gives (e.g. Conventional Commits prefixes).
 Anything you cannot answer goes to the user as a question — never leave a
 required section as a placeholder.
 
-**Body — no template: use the concise default** (verified working structure):
+**Body — no template: use the visual default.** A repository template always
+wins; this applies only when none exists. Write it the way one person talks to
+another: plain, short, no jargon. Do not add sections beyond these.
 
-```markdown
-Closes #<n>            <!-- only when the PR actually resolves an issue -->
+````markdown
+[<link>](<link>) | [<link 2>](<link 2>)     <!-- header: only real links, else omit the line -->
 
-## Problem / Feature
+## Why the change
 
-What is broken or missing, and why the change is needed. One short paragraph;
-include the reproduction or the failing condition if there is one.
+Exactly one sentence: the problem this PR solves and what becomes possible
+after it ships.
 
-Or if its a feature what was added.
+## Special things to note
 
-## Changes
+- 1-3 reviewer-relevant items: warnings, migrations, compatibility
+  constraints, deliberate omissions, surprising decisions.
+- Write `- None.` when there is nothing.
 
-- `path/file.ts:12` — what changed there and why
-- ...
+## Change outline
 
-## Verification
+<short description of the first view>
 
-- What was proven, with commands and numbers: `npm test` — 112 passed (8 new)
-- Or state plainly "not run locally — CI covers this" when no checks were run
-- Anything deliberately not covered
-
-## Notes                <!-- optional: trade-offs, follow-ups, upstream links -->
+```diff
+<the view>
 ```
 
-Keep it factual: numbers and commands over adjectives. Mention upstream
-tickets/links instead of re-explaining them.
+<short description of the next view>
+
+```<lang>
+<the view>
+```
+````
+
+- **Header**: ticket, doc, or plan links you actually know (a `Closes #<n>`
+  line is fine when the PR resolves an issue). Never invent links; omit the
+  line when there are none.
+- **Change outline**: a compact structural view, not prose and not a
+  file-by-file changelog. Use the smallest set of these views that explains
+  the change, in the order that is easiest to follow (it can start with the
+  data shape, the contract, or the files). Omit views that did not change and
+  do not add headings for them:
+  - SQL tables / endpoint request-response contracts (`sql`, `json`, `diff`)
+  - key data structures or types
+  - pseudocode of the changed behavior
+  - a shallow file tree with changed responsibilities
+  - a component tree with important hooks, state and package boundaries
+  - a call tree, call stack, control flow or data flow
+- Use a `diff` block when the change modifies a shape that already exists
+  (`+`/`-` lines inside unchanged context). Show the complete target shape in
+  a language-specific or `text` block when most of it is new or diff notation
+  would hide ownership or order.
+- Examples of the diff shapes:
+
+````text
+ src/
+ ├── commands/
++│   └── show-me.ts       # expands the slash command
+ └── transport.ts
+````
+
+````text
+ submitForm
+   createSession
++    expandSkillMention
+   navigateToSession
+````
+
+- The `show-me` skill, when installed, has more view examples (including
+  Mermaid); it is not required.
+- Put what was verified, or "not run locally — CI covers this", under
+  **Special things to note** only when a reviewer needs it.
+- Mention upstream tickets and links instead of re-explaining them.
 
 ## Step 5 — Preview and confirm
 
