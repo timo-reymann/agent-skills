@@ -9,12 +9,22 @@ Every skill is one folder with a `SKILL.md` — the format both tools read.
 agent-skills/
 ├── README.md
 ├── install.sh          # symlink the skills into a tool's skills directory
+├── THIRD_PARTY_NOTICES.md  # attribution + MIT notice for adapted skills
 ├── gh-issue/           # file a GitHub issue via its template, reviewed by the user
 │   └── SKILL.md
 ├── create-pr/          # open a PR from the current work, template-aware
 │   └── SKILL.md
-└── review-pr/          # drive a PR to green: CI + SonarCloud, commit by commit
-    └── SKILL.md
+├── review-pr/          # drive a PR to green: CI + SonarCloud, commit by commit
+│   └── SKILL.md
+├── grilling/           # relentless design-tree interview of a plan or idea
+│   └── SKILL.md
+├── handoff/            # compact the conversation into a handoff doc for another agent
+│   └── SKILL.md
+├── code-review/        # two-axis review (standards + spec) of changes since a ref
+│   └── SKILL.md
+└── writing-for-agents/ # reference for writing skills, AGENTS.md and CLAUDE.md
+    ├── SKILL.md
+    └── SKILL-MECHANICS.md
 ```
 
 ## Skills
@@ -24,6 +34,18 @@ agent-skills/
 | `gh-issue`  | Reads the repo's issue template/form, interviews you until required fields are filled, shows the full issue for review, submits only on approval.                                                                                                   |
 | `create-pr` | Preflight + conventional commits, fills the repo's PR template if it has one (otherwise a concise Problem/Changes/Verification body), previews title + body and waits for approval, then pushes and opens the PR. Local checks run only on request. |
 | `review-pr` | Waits for CI, diagnoses GitHub Actions / CircleCI failures, reads SonarCloud findings when the project uses Sonar, fixes them in separate commits with a progress update after each push, until everything is green.                                |
+| `grilling`  | Interviews you in rounds over a design tree of decisions, with a recommended answer per question, until nothing is left assumed. *(adapted from mattpocock/skills)* |
+| `handoff`   | Writes a handoff document summarising the conversation for a fresh agent, saved to the OS temp dir with secrets redacted. User-invoked only. *(adapted from mattpocock/skills)* |
+| `code-review` | Reviews the diff since a fixed point on two axes in parallel sub-agents: Standards (repo docs + code-smell baseline) and Spec (the issue/spec you point to). *(adapted from mattpocock/skills)* |
+| `writing-for-agents` | Reference for writing agent-facing documents (skills, `AGENTS.md`, `CLAUDE.md`): context pointers, information hierarchy, completion criteria. *(adapted from mattpocock/skills)* |
+
+## Attribution
+
+`grilling`, `handoff`, `code-review` and `writing-for-agents` are adapted from
+[mattpocock/skills](https://github.com/mattpocock/skills) by Matt Pocock (MIT).
+`code-review` was changed to work without that repo's setup skill and issue
+tracker configuration; the other three are unmodified. See
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for the license notice.
 
 ## Compatibility
 
